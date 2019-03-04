@@ -34,7 +34,7 @@ class Crud extends CI_Controller {
 	{
 		$tableName = $this->input->get('tableName');
 
-		$query = "SELECT f.table_name, t.parent, f.name, f.type, f.label, f.length, f.inlineHelpText, f.nillable, f.insert_display_order, f.view_display_order, f.items_page_order, f.items_page_display_proportion FROM fields f, tables t WHERE t.name = f.table_name and t.name = '" . $tableName ."__c' ORDER BY f.table_name";
+		$query = "SELECT f.table_name, t.parent, f.name, f.type, f.type_value, f.label, f.length, f.inlineHelpText, f.nillable, f.insert_display_order, f.view_display_order, f.items_page_order, f.items_page_display_proportion FROM fields f, tables t WHERE t.name = f.table_name and t.name = '" . $tableName ."__c' ORDER BY f.table_name";
 					  
 		$result = $this->db->query($query)->result_array();
 
