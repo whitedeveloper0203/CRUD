@@ -42,4 +42,16 @@ class Crud extends CI_Controller {
             ->set_content_type('application/json')
             ->set_output(json_encode($result));
 	}
+	public function orgs_by_email()
+	{
+		$email = $this->input->get('email');
+
+		$query = "SELECT org_id, org_name__c from hipaa_contact__c WHERE Email_Address__c = '".$email."'";
+					  
+		$result = $this->db->query($query)->result_array();
+
+		$this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($result));
+	}
 }
