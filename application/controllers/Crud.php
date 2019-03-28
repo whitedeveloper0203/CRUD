@@ -61,10 +61,10 @@ class Crud extends CI_Controller {
 		$org_id = $this->input->get('org_id');				
 	
 		$query = "";
-		if( $type == 'Change_Request__c' && $filter == 'open_change_request')
+		if( $type == 'change_request__c' && $filter == 'open_change_request')
 		{
 			$query 	= " Select Id, Name, Description__c, Date_submitted__c, Date_required__c, Priority__c, Submitter_full_name__c, Submitter_full_name__c, Date_time_change_completed__c 
-				  		FROM Change_request__c 
+				  		FROM change_request__c 
 						WHERE YEAR(Date_submitted__c)  = YEAR(CURDATE())-1 and  Change_Done__c = false and Organization__c = '".$org_id."'";
 		} 
 					  
