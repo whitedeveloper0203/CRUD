@@ -67,7 +67,23 @@ class Crud extends CI_Controller {
 				  		FROM change_request__c 
 						WHERE YEAR(Date_submitted__c)  = YEAR(CURDATE())-1 and  Change_Done__c = false and Organization__c = '".$org_id."'";
 		} 
-					  
+		else if( $type == 'security_incident__c' && $filter == 'open_breach_incident')
+		{
+			$query 	= "SELECT Id, Name, Security_Incident_Description_Summary__c, Reportable_Breach__c, 
+					Investigation_Start_Time__c, Breach__c, Number_of_Patients_Affected__c, Date_Notified_HHS_Breach__c, Date_Patients_Notified_Breach__c 
+					FROM security_incident__c 
+					WHERE  YEAR(Time_of_Breach__c) = YEAR(current_date()) and Breach__c = true and Date_Patients_Notified_Breach__c IS null and  Organization__c= '".$org_id."'";
+		}
+		else if( $type == 'vendor_review__c' && $filter == 'review_failed')
+		{
+			$query 	= "Select vr.Id, vc.Name, vr.Last_Reported_Breach__c, vr.Last_Assessment_Date__c, 
+					vr.HIPAA_Risk_Assessment_Date__c ,vr.Date_first_sent__c, vr.Date_time_review_completed__c 
+					from vendor_review__c as vr
+					left join vendors__c as vc ON vr.Vendor__c = vc.id
+					where YEAR(vr.Date_first_sent__c) = YEAR(current_date()) and vr.is_survey_filled__c=true and (vr.Date_time_review_completed__c = NULL or vr.Digital_Signature1__c = 						NULL or 
+					vr.Digital_Signature2__c = NULL or  vr.Full_Breach_Policy__c = FALSE or vr.Last_assessment_Date__c = NULL) and vc.Organization__c= '".$org_id."'";
+		} 
+				  
 		$result = $this->db->query($query)->result_array();
 
 		$this->output
