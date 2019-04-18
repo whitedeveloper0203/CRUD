@@ -59,13 +59,14 @@ class Crud extends CI_Controller {
 		$type = $this->input->get('type');
 		$filter = $this->input->get('filter');
 		$org_id = $this->input->get('org_id');				
-	
+		$contact_id = $this->input->get('contact_id');				
+
 		$query = "";
 		if( $type == 'change_request__c' && $filter == 'open_change_request')
 		{
 			$query 	= " Select Id, Name, Description__c, Date_submitted__c, Date_required__c, Priority__c, Submitter_full_name__c, Submitter_full_name__c, Date_time_change_completed__c 
 				  		FROM change_request__c 
-						WHERE YEAR(Date_submitted__c)  = YEAR(CURDATE())-1 and  Change_Done__c = false and Organization__c = '".$org_id."'";
+						WHERE YEAR(Date_submitted__c)  = YEAR(CURDATE()) and  Change_Done__c = false and Organization__c = '".$org_id."'";
 		} 
 		else if( $type == 'security_incident__c' && $filter == 'open_breach_incident')
 		{
@@ -83,6 +84,14 @@ class Crud extends CI_Controller {
 					where YEAR(vr.Date_first_sent__c) = YEAR(current_date()) and vr.is_survey_filled__c=true and (vr.Date_time_review_completed__c = NULL or vr.Digital_Signature1__c = 						NULL or 
 					vr.Digital_Signature2__c = NULL or  vr.Full_Breach_Policy__c = FALSE or vr.Last_assessment_Date__c = NULL) and vc.Organization__c= '".$org_id."'";
 		} 
+		else if( $type == 'media_sanitization__c' && $filter == 'submitted')
+		{
+			$query 	= "SELECT media_sanitization_request__c.Id,Media_Sanitization__c, Media_Sanitization__c.Name ,Media_Sanitization__c.Request_Processing_Person_Name__c,Media_Sanitization__c.Status__c,Process__c,media_sanitization_request__c.Name,hipaa_contact__c.Full_Name__c, Date_Time_of_Request__c
+						FROM media_sanitization_request__c, media_sanitization__c, hipaa_contact__c  
+						WHERE Person_Requesting__c= '".$contact_id."' AND hipaa_contact__c.id = media_sanitization_request__c.Person_Requesting__c
+						AND Media_sanitization__c.id = media_sanitization_request__c.Media_Sanitization__c
+						ORDER BY Date_Time_of_Request__c desc";
+		}  
 				  
 		$result = $this->db->query($query)->result_array();
 
