@@ -46,7 +46,7 @@ class Crud extends CI_Controller {
 	{
 		$email = $this->input->get('email');
 
-		$query = "SELECT id, org_id, org_name__c, full_name__c  from hipaa_contact__c WHERE Email_Address__c = '".$email."'";
+		$query = "SELECT id as contact_id, org_id, org_name__c, full_name__c  from hipaa_contact__c WHERE Email_Address__c = '".$email."'";
 					  
 		$result = $this->db->query($query)->result_array();
 
