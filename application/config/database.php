@@ -94,3 +94,47 @@ $db['default'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+
+$db['staging'] = array(
+	'dsn'	=> '',
+	'hostname' => 'hipaa-api.cyxziqumvzt6.us-west-2.rds.amazonaws.com',
+	'username' => 'yuri',
+	'password' => 'bluehippo13',
+	'database' => 'staging_hipaacomplete',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+$db['prod'] = array(
+	'dsn'	=> '',
+	'hostname' => 'hipaa-api.cyxziqumvzt6.us-west-2.rds.amazonaws.com',
+	'username' => 'yuri',
+	'password' => 'bluehippo13',
+	'database' => 'prod_hipaacomplete',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);

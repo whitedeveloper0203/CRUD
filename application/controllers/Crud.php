@@ -33,10 +33,17 @@ class Crud extends CI_Controller {
 	public function index()
 	{
 		$tableName = $this->input->get('tableName');
+		$stage = $this->input->get('stage');
 
+		$current_db = $this->db;
+		if($stage == 'staging')
+			$current_db = $this->load->database('staging', TRUE);
+		else if($stage == 'prod')
+			$current_db = $this->load->database('prod', TRUE);
+		
 		$query = "SELECT f.table_name, t.parent, t.api_url_value, t.insert, t.edit, t.delete, f.name, f.type, f.type_value, f.label, f.length, f.inlineHelpText, f.nillable, f.insert_display_order, f.view_display_order, f.items_page_order, f.items_page_display_proportion FROM fields f, tables t WHERE t.name = f.table_name and t.name = '" . $tableName ."__c' ORDER BY f.table_name";
 					  
-		$result = $this->db->query($query)->result_array();
+		$result = $current_db->query($query)->result_array();
 
 		$this->output
             ->set_content_type('application/json')
