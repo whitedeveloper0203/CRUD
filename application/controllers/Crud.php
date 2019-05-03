@@ -35,8 +35,9 @@ class Crud extends CI_Controller {
 		$tableName = $this->input->get('tableName');
 		$stage = $this->input->get('stage');
 
-		$current_db = $this->db;
-		if($stage == 'staging')
+		if ($stage == 'dev')
+			$current_db = $this->db;
+		else if($stage == 'staging')
 			$current_db = $this->load->database('staging', TRUE);
 		else if($stage == 'prod')
 			$current_db = $this->load->database('prod', TRUE);
