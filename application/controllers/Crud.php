@@ -42,7 +42,10 @@ class Crud extends CI_Controller {
 		else if($stage == 'prod')
 			$current_db = $this->load->database('prod', TRUE);
 		
-		$query = "SELECT f.table_name, t.parent, t.api_url_value, t.insert, t.edit, t.delete, f.name, f.type, f.type_value, f.label, f.length, f.inlineHelpText, f.nillable, f.insert_display_order, f.view_display_order, f.items_page_order, f.items_page_display_proportion FROM fields f, tables t WHERE t.name = f.table_name and t.name = '" . $tableName ."__c' ORDER BY f.table_name";
+		if($tableName != 'login_history')
+			$tableName .= '__c';
+
+		$query = "SELECT f.table_name, t.parent, t.api_url_value, t.insert, t.edit, t.delete, f.name, f.type, f.type_value, f.label, f.length, f.inlineHelpText, f.nillable, f.insert_display_order, f.view_display_order, f.items_page_order, f.items_page_display_proportion FROM fields f, tables t WHERE t.name = f.table_name and t.name = '" . $tableName ."' ORDER BY f.table_name";
 					  
 		$result = $current_db->query($query)->result_array();
 
@@ -107,5 +110,31 @@ class Crud extends CI_Controller {
             ->set_content_type('application/json')
             ->set_output(json_encode($result));
 	}
+
+	// public function get_children_info(){
+	// 	$child_org_id = $this->input->get('child_org_id');
+	// 	$total_fields = [ 'Total_No_of_Breaches_This_Year__c', 'Total_No_of_Trainings_Due__c',
+    //                             'Total_Number_of_Business_Associates__c', 'Total_Number_of_Unsigned_BAA__c', 'Total_Open_Breach_Incidents__c',
+    //                             'Total_Open_Change_Requests__c', 'Total_Open_Security_Incidents__c', 'Total_Over_500_Breaches__c',  'Total_Under_500_Breaches__c']; 
+
+    // 	$enterprise_fields = [ 'Last_Employee_HIPAA_Training__c', 'No_of_Breaches_This_Year__c', 'No_of_Trainings_Due__c',
+    //                             'Number_of_Business_Associates__c', 'Number_of_Unsigned_BAA__c', 'Open_Breach_Incidents__c',
+	// 							'Open_Change_Requests__c', 'Open_Security_Incidents__c', 'Over_500_Breaches__c',  'Under_500_Breaches__c'];
+								
+	// 	$queryURL = '';
+	// 	$parent_selects = 'Id,Name';
+	// 	$children_selects = 'Organization__r.Id,Organization__r.Name';
+	// 	foreach($item as $total_fields){
+	// 		$parent_selects += ','.$item
+	// 		$children_selects += ',Organization__r.'.$item
+	// 	}
+	// 	for($item as $enterprise_fields){
+	// 		$parent_selects += ',' + $item
+	// 		$children_selects += ',Organization__r.'.$item
+	// 	}
+						
+	// 	queryURL = "SELECT+".$parent_selects.",(SELECT+".$children_selects."+from+partners__r)+FROM+organization_info__c+where+id='".$child_org_id."'"
+													
+	// }
 
 }
