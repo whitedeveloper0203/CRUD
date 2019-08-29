@@ -151,7 +151,7 @@ class Crud extends CI_Controller {
 	{
 		$orgId = $this->input->get('org_id');	
 		$stage = $this->input->get('stage');	
-		// $current_db = $this->setCurrentDatabase($stage);
+		$current_db = $this->setCurrentDatabase($stage);
 
 		$query = 'Select Id,Last_Employee_Training__c,Name,First_Name__c,Email_Address__c from HIPAA_Contact__c where ' .
 			'Organization__c=\'' . $orgId . '\' and Individual_Active__c=true and No_Annual_Training__c=false';
