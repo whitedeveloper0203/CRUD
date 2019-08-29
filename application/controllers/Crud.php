@@ -136,5 +136,51 @@ class Crud extends CI_Controller {
 	// 	queryURL = "SELECT+".$parent_selects.",(SELECT+".$children_selects."+from+partners__r)+FROM+organization_info__c+where+id='".$child_org_id."'"
 													
 	// }
+	public function setCurrentDatabase($stage)
+	{
+		if ($stage == 'dev')
+			$current_db = $this->db;
+		else if($stage == 'staging')
+			$current_db = $this->load->database('staging', TRUE);
+		else if($stage == 'prod')
+			$current_db = $this->load->database('prod', TRUE);
+		return $current_db;
+	}
+
+	public function getTrainingCompletedHipaaContact()
+	{
+		$orgId = $this->input->get('org_id');	
+		$stage = $this->input->get('stage');	
+		$current_db = $this->setCurrentDatabase($stage);
+
+		$query = 'Select Id,Last_Employee_Training__c,Name,First_Name__c,Email_Address__c from HIPAA_Contact__c where ' .
+			'Organization__c=\'' . $orgId . '\' and Individual_Active__c=true and No_Annual_Training__c=false';
+		
+		$result = $this->current_db->query($query)->result_array();
+
+		$this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($result));
+
+	}
+
+	public function getTrainingNonCompletedHipaaContact()
+	{
+		$orgId = $this->input->get('org_id');	
+		$stage = $this->input->get('stage');	
+		$current_db = $this->setCurrentDatabase($stage);
+	
+		$query = "Select Id,Last_Employee_Training__c,Name,First_Name__c,Email_Address__c,Individual_Active__c," .
+				"Review_Contact__c,(Select Level_completed__c,Start_Date__c From Trainings__r where Quiz__c='' order by start_date__c desc limit 1)" .
+				" from HIPAA_Contact__c where " .
+				"Organization__c='" . $orgId . "' and Individual_Active__c=true and No_Annual_Training__c=false";
+		
+		$result = $this->current_db->query($query)->result_array();
+
+		$this->output
+			->set_content_type('application/json')
+			->set_output(json_encode($result));
+	}
+
 
 }
